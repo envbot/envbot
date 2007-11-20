@@ -1,4 +1,5 @@
 #!/bin/bash
+# -*- coding: utf-8 -*-
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
@@ -18,7 +19,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.  #
 #                                                                         #
 ###########################################################################
-# A transport module using netcat
+#---------------------------------------------------------------------
+## A transport module using netcat
+#---------------------------------------------------------------------
 
 # A list of features supported
 # These are used: ipv4, ipv6, ssl, nossl, bind
@@ -37,11 +40,11 @@ transport_supports="ipv4 nossl bind"
 #   1 no
 transport_check_support() {
 	[[ -x "$config_transport_netcat_path" ]] ||  {
-		echo "ERROR: Can't find netcat (needed for this transport)"
+		log_fatal "Can't find netcat (needed for this transport)"
 		return 1
 	}
-	type -p mkfifo >/dev/null ||  {
-		echo "ERROR: Can't find mkfifo (needed for this transport)"
+	hash mkfifo >/dev/null 2>&1 ||  {
+		log_fatal "Can't find mkfifo (needed for this transport)"
 		return 1
 	}
 	return 0
@@ -77,6 +80,7 @@ transport_connect() {
 	# To be able to wait for error.
 	sleep 2
 	kill -0 "$transport_pid" >/dev/null 2>&1 || return 1
+	time_get_current 'transport_lastvalidtime'
 }
 
 # Called to close connection
@@ -87,6 +91,19 @@ transport_disconnect() {
 	rm -rf "${transport_tmp_dir_file}"
 	exec 3<&-
 	exec 4<&-
+	# To force code to consider this disconnected.
+	transport_lastvalidtime=0
+}
+
+# Return status
+#   0 If connection is still alive
+#   1 If it isn't.
+transport_alive() {
+	kill -0 "$transport_pid" >/dev/null 2>&1 || return 1
+	local newtime=
+	time_get_current 'newtime'
+	(( newtime - transport_lastvalidtime > 300 )) && return 1
+	return 0
 }
 
 # Return a line in the variable line.
@@ -94,9 +111,13 @@ transport_disconnect() {
 #   0 If Ok
 #   1 If connection failed
 transport_read_line() {
-	read -ru 4 -t 600 line
+	read -ru 4 -t $envbot_transport_timeout line
 	# Fail.
-	[[ $? -ne 0 ]] && return 1
+	if [[ $? -ne 0 ]]; then
+		return 1
+	else
+		time_get_current 'transport_lastvalidtime'
+	fi
 	line=${line//$'\r'/}
 }
 
@@ -105,5 +126,5 @@ transport_read_line() {
 #   $* send this
 # Return code not checked.
 transport_write_line() {
-	kill -0 "$transport_pid" >/dev/null 2>&1 && echo "$@" >&3
+	kill -0 "$transport_pid" >/dev/null 2>&1 && echo "$*" >&3
 }

@@ -29,14 +29,14 @@
 config_rehash() {
 	local new_conf_ver="$(grep -E '^config_version=' "$config_file")"
 	if ! [[ $new_conf_ver =~ ^config_version=$config_current_version ]]; then
-		log_error "REHASH: Not same config version"
+		log_error "REHASH: Not same config version. Rehash aborted."
 		return 2
 	fi
 	# Try sourceing in a subshell first to catch errors
 	# without causing bot to break
 	( source "$config_file" )
 	if [[ $? -ne 0 ]]; then
-		log_error "REHASH: Failed faked source."
+		log_error "REHASH: Failed faked source. Rehash aborted. (TIP: Check for syntax errors in config and any message above this message.)"
 		return 3
 	fi
 	# Source for real if that worked

@@ -1,4 +1,5 @@
 #!/bin/bash
+# -*- coding: utf-8 -*-
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
@@ -75,5 +76,5 @@ transport_read_line() {
 #   $* send this
 # Return code not checked.
 transport_write_line() {
-	echo "$@" >&3
+	echo "$*" >&3
 }

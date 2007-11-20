@@ -102,6 +102,8 @@ config_log_dir="@@logdir@@"
 #     Can be 1 (log) or 0 (don't log)
 config_log_raw=0
 # (*) Should we always log to STDOUT as well?
+#     Note that this doesn't mean it will not log at all if set to 0.
+#     It will still log errors and other important log messages to STDOUT.
 #     This is the same as --verbose.
 #     Can be 1 (log) or 0 (don't log)
 config_log_stdout=0
@@ -132,6 +134,7 @@ config_transport='dev-tcp'
 #   socat doesn't support automatic choice of this.
 #   Note that socat versions below 1.5 does not
 #   support using IPv6 and SSL at the same time.
+#   This can be either "ipv4" or "ipv6".
 #config_transport_socat_protocol_family=ipv4
 
 # Where are transports stored, this can be a relative path from the
@@ -167,7 +170,7 @@ config_modules_dir="@@moddir@@"
 # (*) NickServ password
 config_module_services_nickserv_passwd='nickserv password here'
 # (*) Name of NickServ
-#     Normally this is correct
+#     Normally this is correct.
 config_module_services_nickserv_name='NickServ'
 # (*) Service style. Supported are: anope, atheme
 #     For the default server (irc.kuonet-ng.org) use atheme
