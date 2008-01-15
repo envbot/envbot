@@ -104,7 +104,7 @@ bot_restart() {
 	log_info_stdout "Bot quit gracefully"
 	transport_disconnect
 	rm -rvf "$tmp_home"
-	exec env -i "$(type -p bash)" $0 "${command_line[@]}"
+	exec env -i TERM="$TERM" REALHOME="$REALHOME" "$(type -p bash)" $0 "${command_line[@]}"
 }
 
 
