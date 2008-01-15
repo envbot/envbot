@@ -156,6 +156,15 @@ server_connect(){
 	trap 'transport_disconnect; rm -rvf "$tmp_home"; exit 1' TERM INT
 	log_info_stdout "Connecting to \"${config_server}:${config_server_port}\"..."
 	transport_connect "$config_server" "$config_server_port" "$config_server_ssl" "$config_server_bind" || return 1
+	# This is a fix for weird ircds.
+	[[ $config_server_passwd ]] && send_raw_flood_nolog "PASS $config_server_passwd"
+	log_info_stdout "logging in as $config_firstnick..."
+	send_nick "$config_firstnick"
+	# FIXME: THIS IS HACKISH AND MAY BREAK
+	server_nick_current="$config_firstnick"
+	# If a server password is set, send it.
+	send_raw_flood "USER $config_ident 0 * :${config_gecos}"
+
 	while transport_read_line; do
 		# Check with modules first, needed so we don't skip them.
 		for module in $modules_on_connect; do
@@ -214,15 +223,6 @@ server_connect(){
 					fi
 					;;
 			esac
-		fi
-		if [[ $line =~ "Looking up your hostname" ]]; then
-			log_info_stdout "logging in as $config_firstnick..."
-			send_nick "$config_firstnick"
-			# FIXME: THIS IS HACKISH AND MAY BREAK
-			server_nick_current="$config_firstnick"
-			# If a server password is set, send it.
-			[[ $config_server_passwd ]] && send_raw_flood "PASS $config_server_passwd"
-			send_raw_flood "USER $config_ident 0 * :${config_gecos}"
 		fi
 		server_handle_ping "$line"
 	done
