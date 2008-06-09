@@ -24,7 +24,7 @@
 
 # What version this config is at. This is used to check
 # if your config needs updating.
-config_version=17
+config_version=18
 
 ####################
 # General settings #
@@ -50,7 +50,13 @@ config_server='irc.kuonet-ng.org'
 # What port to use. Normally 6667 works for non SSL connections.
 config_server_port='6667'
 # If 1 use SSL, not all transport modules support this.
+# This means pure SSL, if you want to use STARTTLS set this to 0
+# and use the setting below.
 config_server_ssl=0
+# If 1 try to use STARTTLS. Currently this *only* works with gnutls
+# transport. Note that most IRCds doesn't yet support this. This
+# setting will be ignored if config_server_ssl is not 0.
+config_server_starttls=0
 # Accept invalid server certificates?
 #   Note that some SSL modules (openssl for example) just
 #   print any errors and continues anyway

@@ -143,7 +143,7 @@ command_line=( "$@" )
 ## @Type API
 ## @Read_only Yes
 #---------------------------------------------------------------------
-declare -r config_current_version=17
+declare -r config_current_version=18
 
 # Some constants used in different places
 
