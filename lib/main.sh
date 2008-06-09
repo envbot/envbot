@@ -328,6 +328,7 @@ if ! transport_check_support; then
 	log_fatal "Please read any other errors displayed above and consult documentation for the transport module you are using."
 	envbot_quit 2
 fi
+config_validate_transport
 
 # Now logging functions can be used.
 

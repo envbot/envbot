@@ -80,7 +80,7 @@ transport_alive() {
 #   0 If Ok
 #   1 If connection failed
 transport_read_line() {
-	read -ru 3 -t $envbot_transport_timeout line
+	read -ru 3 -t ${1:-$envbot_transport_timeout} line
 	# Fail.
 	if [[ $? -ne 0 ]]; then
 		return 1
@@ -88,6 +88,11 @@ transport_read_line() {
 		time_get_current 'transport_lastvalidtime'
 	fi
 	line=${line//$'\r'/}
+}
+
+# Ignored, we don't support this.
+transport_starttls() {
+	return 1
 }
 
 # Send a line

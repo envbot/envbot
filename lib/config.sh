@@ -204,6 +204,11 @@ config_validate_transport() {
 			log_fatal "THIS TRANSPORT DOES NOT SUPORT SSL"
 			envbot_quit 1
 		fi
+	elif [[ $config_server_starttls -ne 0 ]]; then
+		if ! list_contains transport_supports "starttls"; then
+			log_fatal "THIS TRANSPORT DOES NOT SUPORT STARTTLS"
+			envbot_quit 1
+		fi
 	else
 		if ! list_contains transport_supports "nossl"; then
 			log_fatal "THIS TRANSPORT REQUIRES SSL"

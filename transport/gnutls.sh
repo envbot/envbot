@@ -24,8 +24,8 @@
 #---------------------------------------------------------------------
 
 # A list of features supported
-# These are used: ipv4, ipv6, ssl, nossl, bind
-transport_supports="ipv4 ipv6 ssl"
+# These are used: ipv4, ipv6, ssl, starttls, nossl, bind
+transport_supports="ipv4 ipv6 ssl starttls"
 
 # Check if all the stuff needed to use this transport is available
 # Return status
@@ -48,12 +48,14 @@ transport_check_support() {
 #   $1 hostname/IP
 #   $2 port
 #   $3 If 1 use SSL. If the module does not support it, just ignore it.
+#      If this is 2, we try to use STARTTLS.
 #   $4 IP to bind to if any and if supported
 #      If the module does not support it, just ignore it.
 # Return status
 #   0 if Ok
 #   1 if connection failed
 transport_connect() {
+	local ssl_mode
 	transport_tmp_dir_file="$(mktemp -dt envbot.gnutls.XXXXXXXXXX)" || return 1
 	# To keep this simple, from client perspective.
 	# We WRITE to out and READ from in
@@ -63,6 +65,9 @@ transport_connect() {
 	exec 4<&-
 	local myargs
 	[[ $config_server_ssl_accept_invalid -eq 1 ]] && myargs="--insecure"
+	if [[ $3 == 2 ]]; then
+		myargs+="  --starttls"
+	fi
 	gnutls-cli "$1" -p "$2" $myargs < "${transport_tmp_dir_file}/out" > "${transport_tmp_dir_file}/in" &
 	transport_pid="$!"
 	echo "$transport_pid" >> "${transport_tmp_dir_file}/pid"
@@ -72,6 +77,12 @@ transport_connect() {
 	sleep 2
 	kill -0 "$transport_pid" >/dev/null 2>&1 || return 1
 	time_get_current 'transport_lastvalidtime'
+}
+
+# Enable TLS
+transport_starttls() {
+	kill -SIGALRM "$transport_pid" >/dev/null 2>&1 || return 1
+	sleep 2
 }
 
 # Called to close connection
@@ -93,16 +104,17 @@ transport_alive() {
 	kill -0 "$transport_pid" >/dev/null 2>&1 || return 1
 	local newtime=
 	time_get_current 'newtime'
-	(( $newtime - $transport_lastvalidtime > 300 )) && return 1
+	(( newtime - transport_lastvalidtime > 300 )) && return 1
 	return 0
 }
 
 # Return a line in the variable line.
+# First parameter is optional custom timeout.
 # Return status
 #   0 If Ok
 #   1 If connection failed
 transport_read_line() {
-	read -ru 4 -t $envbot_transport_timeout line
+	read -ru 4 -t ${1:-$envbot_transport_timeout} line
 	# Fail.
 	if [[ $? -ne 0 ]]; then
 		return 1

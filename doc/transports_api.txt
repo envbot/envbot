@@ -24,11 +24,13 @@ Variables
 =========
 The module defines a variable called $transport_supports
 It is a space separated list of supported features. Current ones:
- * ipv4  - Supports IPv4
- * ipv6  - Supports IPv6
- * nossl - Supports making non-SSL connections
- * ssl   - Supports SSL
- * bind  - Supports using a specific IP when connecting
+ * ipv4     - Supports IPv4
+ * ipv6     - Supports IPv6
+ * nossl    - Supports making non-SSL connections
+ * ssl      - Supports SSL using traditional way.
+ * starttls - Supports SSL using STARTTLS. If a transport ONLY supports SSL this
+              way, it should not list "ssl" as well.
+ * bind     - Supports using a specific IP when connecting
 This variable only needs to be set after transport_check_support has run
 
 
@@ -55,9 +57,19 @@ transport_connect()
 		$1 = Hostname/IP
 		$2 = Port
 		$3 = If 1 use SSL. If the module does not support it, just ignore it.
+		     If it is 2, the module should try to use STARTTLS if supported,
+		     otherwise it should do a plain text connection if supported (and
+		     if it doesn't support that, it should error out)
 		$3 = IP to bind to if any and if supported
 		     If the module does not support it, just ignore it.
 
+
+transport_starttls()
+	This function should do whatever is needed to begin STARTTLS negotiation,
+	if supported. The core will send the needed STARTTLS line before.
+	Return status:
+		0 = Success and supported
+		1 = Not supported or failed
 
 transport_disconnect()
 	Called to close connection
@@ -85,6 +97,8 @@ transport_read_line()
 	Return a line in the variable $line.
 	The function should time out after $envbot_transport_timeout seconds (to allow for
 	periodic events).
+	Parameters:
+		$1 = A custom timeout to use this time, optional.
 	Return status:
 		0 = Success
 		1 = Connection has failed or no data was received in $envbot_transport_timeout seconds.

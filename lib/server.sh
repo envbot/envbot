@@ -241,6 +241,59 @@ server_handle_nick_in_use() {
 }
 
 #---------------------------------------------------------------------
+## Will be set to 1 if we should later turn on TLS.
+## @Type Private
+#---------------------------------------------------------------------
+server_use_starttls=0
+
+#---------------------------------------------------------------------
+## Parse lines for CAP at connect Will call recursive until timeout or
+## CAP line.
+## @Type Private
+#---------------------------------------------------------------------
+server_parse_cap_at_connect() {
+	line=
+	# Custom timeout
+	transport_read_line 1
+	local transport_status="$?"
+	# Still connected?
+	if ! transport_alive; then
+		return 1
+	fi
+	# Timeout? Just return 0
+	if [[ $transport_status -ne 0 ]]; then
+		return 0
+	fi
+	# Did we get right line?
+	if [[ $line =~ ^:[^\ ]+\ CAP\ \*\ LS\ :(.*)$ ]]; then
+		local data="${BASH_REMATCH[1]}"
+		log_debug "Got CAP: $data"
+		# Ok what about tls?
+		if [[ ( $data == *tls* ) && ( $ssl_mode == 2 ) ]]; then
+			server_use_starttls=1
+		fi
+		# Parse any more lines waiting:
+		server_parse_cap_at_connect
+	else
+		log_debug "Got a line after CAP, but not the right line!?"
+		log_debug "Line was: $line"
+		log_debug "Trying again"
+		server_parse_cap_at_connect
+	fi
+}
+
+#---------------------------------------------------------------------
+## Handle CAP at connect.
+## @Type Private
+## @return 1 if timeout, 0 in all other cases even when CAP was not supported.
+#---------------------------------------------------------------------
+server_handle_cap_at_connect() {
+	send_raw_flood 'CAP LS'
+	server_parse_cap_at_connect
+	send_raw_flood 'CAP END'
+}
+
+#---------------------------------------------------------------------
 ## Connect to IRC server.
 ## @Type Private
 #---------------------------------------------------------------------
@@ -249,18 +302,31 @@ server_connect() {
 	on_nick=1
 	# Clear current channels:
 	channels_current=""
+	# Accessed in child processes, don't touch name
+	local ssl_mode="$config_server_ssl"
+	# This is uncommon still, so lets default to using pure SSL if set.
+	if [[ ( $config_server_starttls == 1 ) && ( $config_server_ssl == 0 ) ]]; then
+		ssl_mode=2
+	fi
 	# HACK: Clean up if we are aborted, replaced after connect with one that sends QUIT
 	trap 'transport_disconnect; rm -rvf "$tmp_home"; exit 1' TERM INT
 	log_info_stdout "Connecting to \"${config_server}:${config_server_port}\"..."
-	transport_connect "$config_server" "$config_server_port" "$config_server_ssl" "$config_server_bind" || return 1
+	transport_connect "$config_server" "$config_server_port" "$ssl_mode" "$config_server_bind" || return 1
+	# Lets try CAP.
+	server_handle_cap_at_connect || return 1
+	if [[ $server_use_starttls == 1 ]]; then
+		send_raw_flood 'STARTTLS'
+		sleep 1
+		transport_starttls
+	fi
 
+	# If a server password is set, send it.
 	[[ $config_server_passwd ]] && send_raw_flood_nolog "PASS $config_server_passwd"
 	log_info_stdout "logging in as $config_firstnick..."
 	send_nick "$config_firstnick"
+	send_raw_flood "USER $config_ident 0 * :${config_gecos}"
 	# FIXME: THIS IS HACKISH AND MAY BREAK
 	server_nick_current="$config_firstnick"
-	# If a server password is set, send it.
-	send_raw_flood "USER $config_ident 0 * :${config_gecos}"
 	while true; do
 		line=
 		transport_read_line
