@@ -294,6 +294,38 @@ server_handle_cap_at_connect() {
 }
 
 #---------------------------------------------------------------------
+## Enable TLS with STARTTLS if requested and supported.
+## @Type Private
+## @return 1 if timeout, 0 in all other cases even when CAP was not supported.
+#---------------------------------------------------------------------
+server_handle_starttls() {
+	if [[ $server_use_starttls == 1 ]]; then
+		send_raw_flood 'STARTTLS'
+		sleep 1
+		transport_starttls
+		while true; do
+			line=
+			# Custom timeout
+			transport_read_line 3
+			local transport_status="$?"
+			if [[ $transport_status -ne 0 ]]; then
+				return 1
+			fi
+			if [[ "$line" =~ ^:[^\ ]+\ +([0-9]{3})\ +([^ ]+)\ +(.*) ]]; then
+				local numeric="${BASH_REMATCH[1]}"
+				case $numeric in
+					670)
+						transport_starttls
+						return 0;;
+					671)
+						return 1;;
+				esac
+			fi
+		done
+	fi
+}
+
+#---------------------------------------------------------------------
 ## Connect to IRC server.
 ## @Type Private
 #---------------------------------------------------------------------
@@ -314,11 +346,10 @@ server_connect() {
 	transport_connect "$config_server" "$config_server_port" "$ssl_mode" "$config_server_bind" || return 1
 	# Lets try CAP.
 	server_handle_cap_at_connect || return 1
-	if [[ $server_use_starttls == 1 ]]; then
-		send_raw_flood 'STARTTLS'
-		sleep 1
-		transport_starttls
-	fi
+	server_handle_starttls || {
+		log_error "Could not enable GNUTLS."
+		return 1
+	}
 
 	# If a server password is set, send it.
 	[[ $config_server_passwd ]] && send_raw_flood_nolog "PASS $config_server_passwd"
