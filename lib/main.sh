@@ -419,11 +419,12 @@ while true; do
 				continue 2
 			fi
 		done
-		if [[ $line =~ ^:${server_name}\ +([0-9]{3})\ +([^ ]+)\ +(.*) ]]; then
+		if [[ $line =~ ^:([^ ]+)\ +([0-9]{3})\ +([^ ]+)\ +(.*) ]]; then
 			# this is a numeric
-			numeric="${BASH_REMATCH[1]}"
-			numericdata="${BASH_REMATCH[3]}"
-			server_handle_numerics "$numeric" "${BASH_REMATCH[2]}" "$numericdata"
+			numericserver="${BASH_REMATCH[1]}"
+			numeric="${BASH_REMATCH[2]}"
+			numericdata="${BASH_REMATCH[4]}"
+			server_handle_numerics "$numeric" "${BASH_REMATCH[3]}" "$numericdata"
 			for module in $modules_on_numeric; do
 				module_${module}_on_numeric "$numeric" "$numericdata"
 				if [[ $? -ne 0 ]]; then
