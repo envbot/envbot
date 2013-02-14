@@ -1,7 +1,7 @@
 envbot - A modular IRC bot in bash
 ==================================
 envbot is a modular IRC bot coded in bash.
-http://envbot.org/trac
+https://launchpad.net/envbot
 
 Features include:
  * SSL
@@ -11,7 +11,6 @@ Features include:
  * Loading, unloading and reloading of modules at runtime
  * Rehashing configuration at runtime
  * Advanced access control
-See http://envbot.org/trac/query?status=new&status=assigned&status=reopened&type=enchantment&order=priority for other planed features
 
 
 Installing
@@ -87,15 +86,7 @@ Feedback
 We (the developers) would love to get feedback on what you like/dislike with
 envbot, what features you want, and what you use it for.
 
-Please also report any bugs you find at http://envbot.org/trac/simpleticket
+Please also report any bugs you find at https://bugs.launchpad.net/envbot
 (no login needed, but please enter your email so we can contact you if we
 need more details about your problem).
 
-
-Contacting developers
----------------------
-You can reach us on IRC.
-1)  Server: irc.kuonet-ng.org
-    Channel: #envbot
-2)  Server: irc.securitychat.org
-    Channel: #envbot

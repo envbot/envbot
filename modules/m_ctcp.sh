@@ -70,7 +70,7 @@ module_ctcp_on_PRIVMSG() {
 				send_nctcp "$sendernick" "PING $ctcp_parameters"
 				;;
 			"SOURCE")
-				send_nctcp "$sendernick" "SOURCE http://envbot.org"
+				send_nctcp "$sendernick" "SOURCE https://launchpad.net/envbot"
 				;;
 			"TIME")
 				send_nctcp "$sendernick" "TIME $(date +'%Y-%m-%d %k:%M:%S')"

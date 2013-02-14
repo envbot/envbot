@@ -73,7 +73,7 @@ declare -r envbot_version='0.1-trunk+bzr'
 ## @Type API
 ## @Read_only Yes
 #---------------------------------------------------------------------
-declare -r envbot_homepage='http://envbot.org'
+declare -r envbot_homepage='https://launchpad.net/envbot'
 
 ##############
 #            #
@@ -206,7 +206,7 @@ print_cmd_help() {
 print_version() {
 	echo "envbot $envbot_version - An advanced modular IRC bot in bash."
 	echo ''
-	echo 'Copyright (C) 2007-2009 Arvid Norlander'
+	echo 'Copyright (C) 2007-2013 Arvid Norlander'
 	echo 'Copyright (C) 2007-2008 EmErgE'
 	echo 'This is free software; see the source for copying conditions.  There is NO'
 	echo 'warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.'
