@@ -63,7 +63,9 @@ all: numerics config
 config:
 	$(SED) "s|@@moddir@@|modules|;s|@@transportdir@@|transport|;s|@@datadir@@|data|;s|@@logdir@@|logs|" doc/bot_settings.sh.example.in > bot_settings.sh.example
 
-numerics:
+numerics: lib/numerics.sh
+
+lib/numerics.sh: tools/numerics.txt
 	tools/build_numerics.sh > lib/numerics.sh
 
 # Used by developers to update man page.
