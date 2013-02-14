@@ -98,6 +98,7 @@ numeric[321]=RPL_LISTSTART
 numeric[322]=RPL_LIST
 numeric[323]=RPL_LISTEND
 numeric[324]=RPL_CHANNELMODEIS
+numeric[328]=RPL_CHANNELURL   # Not from any RFC. Charybdis and InspIRCd.
 numeric[329]=RPL_CREATIONTIME # Not from any RFC. Used on InspIRCd at least.
 numeric[330]=RPL_WHOISACCOUNT # Not from any RFC. This is how it is used on InspIRCd with m_services_account.
 numeric[331]=RPL_NOTOPIC
