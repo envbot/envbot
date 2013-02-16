@@ -281,6 +281,13 @@ config_module_ctcp_version_reply="envbot $envbot_version"
 
 
 #####################################################################
+# Ignore module
+#
+# (*) Regular expression for n!u@h to ignore.
+#config_module_ignore_regexp='^otherbot![^@]*@.*$'
+
+
+#####################################################################
 # Vote module.
 #
 # (*) The channel where vote mode will work.

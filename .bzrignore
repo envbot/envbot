@@ -1,3 +1,4 @@
+.*.kate-swp
 *~
 ./bot_settings.sh.example
 ./data/*.db
