@@ -449,7 +449,7 @@ module_factoids_on_PRIVMSG() {
 	fi
 	local query="$3"
 	# Answer question in channel if we got a factoid.
-	if [[ "$query" =~ ^((what|where|who|why|how)\ )?((is|are|were|was|to|can I find)\ )?([^\?]+)\?? ]]; then
+	if [[ "$query" =~ ^((what|where|who|why|how)\ )((is|are|were|was|to|can I find)\ )?([^\?]+)\?? ]]; then
 		local key="${BASH_REMATCH[@]: -1}"
 		local value="$(module_factoids_SELECT "$(tr '[:upper:]' '[:lower:]' <<< "$key")")"
 		if [[ "$value" ]]; then
