@@ -1,0 +1,129 @@
+# ChangeLog
+
+This is a overview of changes users may care about. Detailed changelog can be
+acquired using git.
+
+## 0.1-beta1
+
+A lot is new in this release. Some of the highlights include:
+
+ * Help command.
+ * Coloured log output.
+ * Modules that is split over several files in a subdirectory.
+   See contrib/modules/m_perl for an example.
+ * Lots of speed improvements by avoiding subshells when possible and such.
+ * Checks in subshells that module loading will work before actually loading it.
+   This is to avoid crashes on syntax errors in modules and such.
+ * A new centralised bot command dispatching system that is easier to use
+   than the old on_PRIVMSG and having every module parse it by itself.
+ * API documentation is now auto generated from source code using bashdoc.
+ * Extended and reworked internal API.
+ * New more flexible module API.
+ * Many new modules.
+   * Core:
+     * commands     - List commands from each module.
+     * ctcp         - Responds to CTCPs send to the bot.
+     * dice         - Roll a dice.
+     * help         - Help command.
+     * karma        - Karma module (the common ++/-- stuff)
+     * nicktracking - tracks nicks <-> host mapping for channels the bot is in.
+     * ping         - Provide some latency info and such.
+     * uptime       - Tell the uptime of the bot.
+   * Contrib (these either need extra deps or are not supported by the developers):
+     * convert      - Convert between different units (needs GNU or BSD units installed).
+     * perl         - Run perl code (not supported because it may not be safe).
+ * Lots of bugfixes.
+
+The rest of this change log entry is mainly for developers wanting to port their
+code from 0.0.1 to 0.1:
+
+ * 0.0.1 modules won't work without change, the both the module and core APIs
+   have changed a lot. For example on_PRIVMSG should not be used now most of the
+   time, instead see commands_register function.
+   See doc/module_api2.txt and the auto generated API docs for details.
+ * Quite a few Core API functions have changed parameter format:
+   A lot now take "out parameters" instead of using $() construct. This is
+   because subshells (caused by the $() construct) are slow.
+ * Sadly one feature from trunk were too unstable to make it into 0.1, it will
+   hopefully be in the next version. This feature was periodic events. This is
+   the reason for some odd code related to transports status in this version
+   ($transport_status and transport_alive to be specific).
+
+
+# 0.0.1
+
+Revisions | Description
+--------- | -----------
+475       | Updated man page.
+472,474   | Fixed bash version check.
+471       | Fixed an incorrect regular expression in lib/main.sh
+470       | Made list_contains use grep -F instead.
+469       | Fixed typo in ebuild.
+
+
+# 0.0.1-rc1
+
+Revisions | Description
+--------- | -----------
+465       | Backported fix to remove eval from various places.
+463-464   | Fixed bug in modules/m_kick_ban.sh that made bot loose part of kick reason sometimes.
+462       | Fixed bug in modules/m_join.sh that caused it to never send a reason on part.
+459-461   | Added Gentoo ebuild for envbot.
+457       | Made it work correctly on FreeBSD
+456       | Fixed bug 29 (Channels not rejoined after ping timeout) and similar issue in modules/m_services.sh (ghost needed state not reset).
+453       | Fixed for one aspect of bug 11.
+
+
+# 0.0.1-beta5
+
+Revisions | Description
+--------- | -----------
+450       | Merged r451 from trunk: Fix broken misc_clean_spaces (was broken after beta4).
+443       | Made parse_hostmask_*() faster and added some missing quotes.
+441       | Found that an INVITE hook was missing, added it.
+430-435   | Added more numerics.
+429       | Workaround for bug #21 added (Own nick desync during connect with ghost).
+
+
+# 0.0.1-beta4
+
+Revisions | Description
+--------- | -----------
+424       | Config version update: Added $config_log_raw. Defines if we should log raw lines or not (affects both STDOUT and logfiles)
+420,423   | misc_clean_spaces was slow, changed to inline ways of stripping spaces.
+416       | Got rid of deprecated parse_get_colon_arg function.
+415       | Added some code to check for stuff that matches no hook, and found that there is no umode change hook because of this. Fixed.
+411       | Made assignment of factoids work if there is more than one separator in string, yes this may be slower but it works.
+410       | Fixed bug in factoids with forget command not reporting "I didn't have a factoid matching..." when none was found.
+
+
+# 0.0.1-beta3
+
+Revisions | Description
+--------- | -----------
+407       | Make error messages in transports more verbose.
+402-406   | Make m_calc.sh check it's arguments on IRC better to make it secure.
+401       | Fix bug that made modules_load break if a dependency failed to load.
+398       | Made main envbot a wrapper script that sanitise the environment and then executes main bot.
+395       | Some more functions are now internal in lib/log.sh, modules should use the log level versions.
+393       | m_autojoin was slowing down rehash more than needed, fixed that.
+392       | Fixed: Could not unload rehash, module_rehash_UNLOAD returned 127!
+391       | Fixed bug that caused FINALISE hooks to never run
+383       | Add bash version check (it turned out bash-3.1 and older was not supported).
+
+
+# 0.0.1-beta2
+
+Revisions | Description
+--------- | -----------
+379       | Actually more than one space between parameters on IRC is possible, yes that sucks, and no sane server would send it, but just to be on the safe side
+377       | Added this ChangeLog.
+376       | Fixed potential security problem in SQL cleaning code in module_sqlite3_clean_string (I can't find a way to abuse this so I don't think the risk is very high)
+375       | Added access_log_action()
+373-375   | Introduced more advanced logging API with several levels (info, warn, error and fatal)
+371       | Optimised log_write() in lib/log.sh (something like 20 times as fast now if my testing is correct)
+
+
+# 0.0.1-beta1
+
+First version, no ChangeLog as there is nothing to older to list changes against.

@@ -1,0 +1,115 @@
+# envbot - A modular IRC bot in bash
+
+envbot is a modular IRC bot coded in bash.
+
+Features include:
+
+ * SSL
+ * IPv6
+ * Transport (SSL, whatever) to server are also modules
+ * Modularity
+ * Loading, unloading and reloading of modules at runtime
+ * Rehashing configuration at runtime
+ * Advanced access control
+
+
+## Installing
+
+Installation isn't needed, you can run it from source directory.
+Installation is possible though, but not recommended.
+
+All you have to do is to get the bot running is:
+
+* Run:
+
+      make
+
+* Copy `bot_settings.sh.example` to `bot_settings.sh`
+* Edit `bot_settings.sh` to set correct nick, IRC server, service password, and so on.
+* Run:
+
+      ./envbot
+
+To install use something like (change the paths to fit your system):
+
+    make install DESTDIR=/ PREFIX=/home/user/envbot
+
+
+## License
+
+envbot is licensed under GPL version 3, with the exceptions of:
+	data/quotes.txt.example.pqf:
+		The source (games-misc/fortune-mod-pqf/fortune-mod-pqf-6.0.ebuild from Gentoo portage)
+		says it is under GPL-2.
+	tools/bashdoc/bashdoc.sh
+		GPL-2. bashdoc is a heavily updated and modified version of bashdoc from
+		the sourcemage project.
+
+## Dependencies
+
+* bash - version 3.2.10 or later should work fine, but not tested on anything below 3.2.17
+* Standard POSIX tools. Should be included on any recent and sane Linux
+  distro.
+
+Some transports and module have extra dependencies. Note that when it says
+"you need the program" just having the library won't work. You actually need
+a program with this name.
+
+Transports:
+
+* dev-tcp:
+  The bash you use must support the pseudo device /dev/tcp. Debian is known
+  to disable this. Most other distros are sane and have it on.
+* netcat:
+  You need the program netcat.
+  This is for Debian users and others with a broken distro. If your
+  distro supports it use dev-tcp transport instead.
+  I have only tested with GNU netcat. (http://netcat.sourceforge.net/)
+  Supports binding to a specific IP.
+* gnutls:
+  You need the program gnutls-cli. (http://www.gnutls.org/)
+* openssl:
+  You need the program openssl. (http://www.openssl.org/)
+* socat:
+  You need the program socat. (http://www.dest-unreach.org/socat/)
+  Note that while socat support IPv4, IPv6, SSL and non-SSL it doesn't
+  support both SSL and IPv6 at the same time if the version of socat
+  is lower than 1.5.
+  Supports binding to a specific IP.
+
+Modules:
+
+* sqlite3:
+  You need the program sqlite3. (http://www.sqlite.org/)
+* factoids
+  This depends on the sqlite3 module and therefore have the
+  same dependencies as it
+* seen
+  This depends on the sqlite3 module and therefore have the
+  same dependencies as it
+
+
+## Contributed modules
+
+These are extra modules in contrib/modules. They are not really
+supported by the developers. Information about dependencies and
+extra configuration options is in each contrib module.
+
+If you want to use a contrib module the recommended way is:
+
+    cd modules
+    ln -s ../contrib/modules/m_modulename.sh
+
+That way if the contrib module is updated you will get the new
+version automatically.
+
+
+## Feedback
+
+We (the developers) would love to get feedback on what you like/dislike with
+envbot, what features you want, and what you use it for.
+
+Please also report any bugs you find at https://bugs.launchpad.net/envbot
+(no login needed, but please enter your email so we can contact you if we
+need more details about your problem).
+
