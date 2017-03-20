@@ -1,5 +1,7 @@
-.*.kate-swp
+*.sublime-project
+*.sublime-workspace
 *~
+.*.kate-swp
 /bot_settings.sh.example
 /data/*.db
 /data/faq.txt

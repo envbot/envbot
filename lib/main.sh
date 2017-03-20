@@ -67,13 +67,13 @@ fi
 ## @Type API
 ## @Read_only Yes
 #---------------------------------------------------------------------
-declare -r envbot_version='0.1-trunk+bzr'
+declare -r envbot_version='0.1-trunk+git'
 #---------------------------------------------------------------------
 ## Homepage of envbot.
 ## @Type API
 ## @Read_only Yes
 #---------------------------------------------------------------------
-declare -r envbot_homepage='https://launchpad.net/envbot'
+declare -r envbot_homepage='https://github.com/envbot/envbot'
 
 ##############
 #            #
@@ -195,7 +195,7 @@ print_cmd_help() {
 	echo '  envbot                  Runs envbot with default options.'
 	echo '  envbot -c bot.config    Runs envbot with the config bot.config.'
 	echo ''
-	echo "Report bugs to ${envbot_homepage}/trac/simpleticket"
+	echo "Report bugs to ${envbot_homepage}/issues"
 	envbot_quit 0
 }
 
