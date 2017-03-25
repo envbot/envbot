@@ -4,6 +4,7 @@
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
 #  Copyright (C) 2007-2009  Arvid Norlander                               #
+#  Copyright (C) 2007-2008  Vsevolod Kozlov                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -20,44 +21,30 @@
 #                                                                         #
 ###########################################################################
 #---------------------------------------------------------------------
-## This module does autojoin after connect.
+## Ignores n!u@h regular expressions.
 #---------------------------------------------------------------------
 
-module_autojoin_INIT() {
+module_ignore_INIT() {
 	modinit_API='2'
-	modinit_HOOKS='after_connect'
-	helpentry_module_autojoin_description="Provides support for autojoining channels."
+	modinit_HOOKS='on_raw'
+	helpentry_module_ignore_description="Allows ignoring specific n!u@h regular expressions set in the configuration file."
 }
 
-module_autojoin_UNLOAD() {
-	unset module_autojoin_join_from_config
-}
-
-module_autojoin_REHASH() {
-	module_autojoin_join_from_config
+module_ignore_UNLOAD() {
 	return 0
 }
 
-#---------------------------------------------------------------------
-## Autojoin channels from config.
-## @Type Private
-#---------------------------------------------------------------------
-module_autojoin_join_from_config() {
-	local channel
-	for channel in "${config_module_autojoin_channels[@]}"; do
-		# No quotes around channel because second word of it may be a key
-		# and list_contains just uses the first 2 arguments so a
-		# third one will be ignored.
-		if ! list_contains "channels_current" $channel; then
-			log_info "Joining $channel"
-			# No quotes here because then second argument can be a key
-			channels_join $channel
-			sleep 2
-		fi
-	done
+module_ignore_REHASH() {
+	return 0
 }
 
-# Called after bot has connected
-module_autojoin_after_connect() {
-	module_autojoin_join_from_config
+module_ignore_on_raw() {
+	local line="$1"
+	if [[ "$line" =~ ^:([^ ]*)\ +PRIVMSG\ +[^:]+\ +:.* ]]; then
+		local sender="${BASH_REMATCH[1]}"
+		if [[ "$line" =~ $config_module_ignore_regexp ]]; then
+			return 1
+		fi
+	fi
+	return 0
 }

@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -28,6 +28,13 @@ module_say_INIT() {
 	modinit_HOOKS=''
 	commands_register "$1" 'say' || return 1
 	commands_register "$1" 'act' || return 1
+	helpentry_module_say_description="Provides say and act commands."
+
+	helpentry_say_act_syntax='<target> <message>'
+	helpentry_say_act_description='Send a <message> to <target> (nick or channel).'
+
+	helpentry_say_act_syntax='<target> <message>'
+	helpentry_say_act_description='Peform the <message> as a /me to <target> (nick or channel).'
 }
 
 module_say_UNLOAD() {

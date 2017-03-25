@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #  Copyright (C) 2007-2008  EmErgE <halt.system@gmail.com>                #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
@@ -36,7 +36,16 @@ module_assign_mode_INIT() {
 	commands_register "$1" 'protect'   || return 1
 	commands_register "$1" 'deprotect' || return 1
 	commands_register "$1" 'topic'     || return 1
+	helpentry_module_assign_mode_description="Provides op, deop and related commands."
 
+	local help_cmd
+	for help_cmd in op deop halfop halfdeop voice devoice protect deprotect; do
+		printf -v "helpentry_assign_mode_${help_cmd}_syntax" '<#channel> <nick>'
+		printf -v "helpentry_assign_mode_${help_cmd}_description" "$(tr 'a-z' 'A-Z' <<< "${help_cmd:0:1}")${help_cmd:1} <nick> in <#channel>."
+	done
+
+	helpentry_assign_mode_topic_syntax='<#channel> <new topic>'
+	helpentry_assign_mode_topic_description='Change topic to <new topic> in <#channel>'
 }
 
 module_assign_mode_UNLOAD() {
@@ -209,7 +218,7 @@ module_assign_mode_handler_topic() {
 		if access_check_capab "topic" "$sender" "$channel"; then
 			send_topic "$channel" "$message"
 		else
-			access_fail "$sender" "make the bot protect somebody" "topic"
+			access_fail "$sender" "change the topic" "topic"
 		fi
 	else
 		local sendernick

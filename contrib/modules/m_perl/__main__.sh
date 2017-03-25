@@ -5,7 +5,7 @@
 #  envbot - an IRC bot in bash                                            #
 #  Copyright (C) 2007-2008  EmErgE <halt.system@gmail.com>                #
 #  Copyright (C) 2007-2008  Vsevolod Kozlov                               #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -37,6 +37,10 @@ module_perl_INIT() {
 	fi
 	module_perl_working_dir="$MODULE_BASE_PATH"
 	commands_register "$1" 'perl' || return 1
+	helpentry_module_perl_description="Execute perl code."
+
+	helpentry_perl_perl_syntax='<code>'
+	helpentry_perl_perl_description='Execute perl code.'
 }
 
 module_perl_UNLOAD() {

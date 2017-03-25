@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -27,6 +27,9 @@ module_karma_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='after_load on_PRIVMSG'
 	commands_register "$1" 'karma' || return 1
+	helpentry_module_karma_description="Provides karma support. Use ++ and -- after a string in a channel to change karma."
+	helpentry_karma_karma_syntax='<string>'
+	helpentry_karma_karma_description='Get current karma for <string>.'
 }
 
 module_karma_UNLOAD() {
@@ -244,6 +247,6 @@ module_karma_handler_karma() {
 	else
 		local sendernick
 		parse_hostmask_nick "$sender" 'sendernick'
-		feedback_bad_syntax "$sendernick" "karma" "<item>"
+		feedback_bad_syntax "$sendernick" "karma" "<string>"
 	fi
 }

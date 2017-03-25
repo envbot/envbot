@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -26,6 +26,7 @@
 module_ctcp_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='after_load on_PRIVMSG'
+	helpentry_module_ctcp_description="Answers CTCP requests."
 }
 
 module_ctcp_UNLOAD() {
@@ -69,7 +70,7 @@ module_ctcp_on_PRIVMSG() {
 				send_nctcp "$sendernick" "PING $ctcp_parameters"
 				;;
 			"SOURCE")
-				send_nctcp "$sendernick" "SOURCE http://envbot.org"
+				send_nctcp "$sendernick" "SOURCE https://launchpad.net/envbot"
 				;;
 			"TIME")
 				send_nctcp "$sendernick" "TIME $(date +'%Y-%m-%d %k:%M:%S')"

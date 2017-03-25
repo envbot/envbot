@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -26,6 +26,7 @@
 module_services_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='on_connect after_load after_disconnect'
+	helpentry_module_services_description="Provides support for identifying with services."
 }
 
 module_services_UNLOAD() {

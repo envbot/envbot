@@ -3,7 +3,7 @@
 # $Header$
 
 DESCRIPTION="An advanced modular IRC bot coded in bash"
-HOMEPAGE="http://envbot.org"
+HOMEPAGE="https://launchpad.net/envbot"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-3"

@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #  Copyright (C) 2007-2008  Vsevolod Kozlov                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
@@ -35,8 +35,7 @@ module_uptime_INIT() {
 }
 
 module_uptime_UNLOAD() {
-	unset helpentry_module_uptime_description
-	unset helpentry_uptime_uptime_syntax helpentry_uptime_uptime_description
+	return 0
 }
 
 module_uptime_REHASH() {

@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #  Copyright (C) 2007-2008  EmErgE <halt.system@gmail.com>                #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
@@ -30,6 +30,13 @@ module_kick_ban_INIT() {
 	unset module_kick_ban_next_unset module_kick_ban_timed_bans
 	commands_register "$1" 'kick' || return 1
 	commands_register "$1" 'ban' || return 1
+	helpentry_module_kick_ban_description="Provides kick and ban commands."
+
+	helpentry_kick_ban_kick_syntax='[<#channel>] <nick> <reason>'
+	helpentry_kick_ban_kick_description='Kick someone from a channel. Channel parameter only needed if not sent in a channel.'
+
+	helpentry_kick_ban_ban_syntax='<#channel> <nick> [<duration>]'
+	helpentry_kick_ban_ban_description='Ban someone from a channel. Duration is optional and defaults to infinite.'
 }
 
 module_kick_ban_UNLOAD() {

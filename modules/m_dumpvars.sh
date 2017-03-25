@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -27,6 +27,9 @@ module_dumpvars_INIT() {
 	modinit_API='2'
 	modinit_HOOKS=''
 	commands_register "$1" 'dumpvars' || return 1
+	helpentry_module_dumpvars_description="Debugging module to dump all variables in the bot."
+	helpentry_dumpvars_dumpvars_syntax=''
+	helpentry_dumpvars_dumpvars_description='Dump all variables to STDOUT.'
 }
 
 module_dumpvars_UNLOAD() {

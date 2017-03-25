@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -32,6 +32,25 @@ module_factoids_INIT() {
 	commands_register "$1" 'unlock_factoid' 'unlock factoid' || return 1
 	commands_register "$1" 'whatis'                          || return 1
 	commands_register "$1" 'factoid_stats'  'factoid stats'  || return 1
+	helpentry_module_factoids_description="Provides a factoid database."
+
+	helpentry_factoids_learn_syntax='<key> (as|is|are|=) <value>'
+	helpentry_factoids_learn_description='Teach the bot a new factoid.'
+
+	helpentry_factoids_forget_syntax='<key>'
+	helpentry_factoids_forget_description='Make the bot forget the factoid <key>.'
+
+	helpentry_factoids_lock_factoid_syntax='<key>'
+	helpentry_factoids_lock_factoid_description='Prevent normal users from changing the factoid <key>.'
+
+	helpentry_factoids_unlock_factoid_syntax='<key>'
+	helpentry_factoids_unlock_factoid_description='Allow changes to a previously locked factoid <key>.'
+
+	helpentry_factoids_whatis_syntax='<key>'
+	helpentry_factoids_whatis_description='Look up the factoid <key>.'
+
+	helpentry_factoids_factoid_stats_syntax=''
+	helpentry_factoids_factoid_stats_description='Report some statistics on the factoid database.'
 }
 
 
@@ -430,7 +449,7 @@ module_factoids_on_PRIVMSG() {
 	fi
 	local query="$3"
 	# Answer question in channel if we got a factoid.
-	if [[ "$query" =~ ^((what|where|who|why|how)\ )?((is|are|were|was|to|can I find)\ )?([^\?]+)\?? ]]; then
+	if [[ "$query" =~ ^((what|where|who|why|how)\ )((is|are|were|was|to|can I find)\ )?([^\?]+)\?? ]]; then
 		local key="${BASH_REMATCH[@]: -1}"
 		local value="$(module_factoids_SELECT "$(tr '[:upper:]' '[:lower:]' <<< "$key")")"
 		if [[ "$value" ]]; then

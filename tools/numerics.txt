@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an irc bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -45,6 +45,8 @@ numeric[5]=RPL_ISUPPORT  # Not in any RFC. See http://www.irc.org/tech_docs/005.
 numeric[6]=RPL_MAP       # Not from any RFC
 numeric[7]=RPL_MAPEND    # Not from any RFC
 numeric[8]=RPL_SNOMASK   # Not from any RFC, used on Unreal
+
+numeric[42]=RPL_YOURID   # Not from any RFC, used by inspircd for showing UUID.
 
 # Command replies.
 numeric[205]=RPL_TRACEUSER
@@ -96,6 +98,7 @@ numeric[321]=RPL_LISTSTART
 numeric[322]=RPL_LIST
 numeric[323]=RPL_LISTEND
 numeric[324]=RPL_CHANNELMODEIS
+numeric[328]=RPL_CHANNELURL   # Not from any RFC. Charybdis and InspIRCd.
 numeric[329]=RPL_CREATIONTIME # Not from any RFC. Used on InspIRCd at least.
 numeric[330]=RPL_WHOISACCOUNT # Not from any RFC. This is how it is used on InspIRCd with m_services_account.
 numeric[331]=RPL_NOTOPIC
@@ -143,6 +146,7 @@ numeric[422]=ERR_NOMOTD
 numeric[432]=ERR_ERRONEUSNICKNAME     # Bad/forbidden nickname
 numeric[433]=ERR_NICKNAMEINUSE        # Nick in use
 numeric[438]=ERR_NICKTOOFAST          # Not from any RFC. Used on ircu and Unreal (at least).
+numeric[439]=ERR_TARGETTOOFAST        # Not from any RFC(?). InspIRCd sends this on connect from a module to block a specific type of spambots.
 numeric[441]=ERR_USERNOTINCHANNEL
 numeric[442]=ERR_NOTONCHANNEL
 numeric[443]=ERR_USERONCHANNEL
@@ -198,6 +202,8 @@ numeric[900]=RPL_MODULES
 numeric[901]=RPL_ENDOFMODULES
 numeric[902]=RPL_COMMANDS              # 902 <nick> :<command> <module name> <minimum parameters>
 numeric[903]=RPL_ENDOFCOMMANDS         # 903 <nick> :End of COMMANDS list
+numeric[931]=RPL_NOSPAM                # 931 <nick> :Malicious bots, spammers, and other automated systems of dubious origin are NOT welcome here.
+                                       # Sent during connect from a module to block a specific type of spambots.
 numeric[936]=ERR_CENSORED              # 936 <nick> <channel> <word> :Your message contained a censored word, and was blocked
 numeric[937]=ERR_ALREDYCENSORED        # 937 <nick> <channel> :The word %s is already on the spamfilter list
 numeric[938]=ERR_NOTCENSORED           # 938 <nick> <channel> :No such spamfilter word is set

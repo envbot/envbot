@@ -4,7 +4,7 @@
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
 #  Copyright (C) 2007-2008  EmErgE <halt.system@gmail.com>                #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -34,6 +34,9 @@ module_calc_INIT() {
 		return 1
 	fi
 	commands_register "$1" 'calc' || return 1
+	helpentry_module_calc_description="Simple calculator module."
+	helpentry_calc_calc_syntax='<expression>'
+	helpentry_calc_calc_description='Try to calculate <expression> using bc.'
 }
 
 module_calc_UNLOAD() {

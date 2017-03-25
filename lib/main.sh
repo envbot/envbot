@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -67,13 +67,13 @@ fi
 ## @Type API
 ## @Read_only Yes
 #---------------------------------------------------------------------
-declare -r envbot_version='0.0.1-trunk+bzr'
+declare -r envbot_version='0.1-trunk+git'
 #---------------------------------------------------------------------
 ## Homepage of envbot.
 ## @Type API
 ## @Read_only Yes
 #---------------------------------------------------------------------
-declare -r envbot_homepage='http://envbot.org'
+declare -r envbot_homepage='https://github.com/envbot/envbot'
 
 ##############
 #            #
@@ -195,7 +195,7 @@ print_cmd_help() {
 	echo '  envbot                  Runs envbot with default options.'
 	echo '  envbot -c bot.config    Runs envbot with the config bot.config.'
 	echo ''
-	echo "Report bugs to ${envbot_homepage}/trac/simpleticket"
+	echo "Report bugs to ${envbot_homepage}/issues"
 	envbot_quit 0
 }
 
@@ -206,7 +206,7 @@ print_cmd_help() {
 print_version() {
 	echo "envbot $envbot_version - An advanced modular IRC bot in bash."
 	echo ''
-	echo 'Copyright (C) 2007-2008 Arvid Norlander'
+	echo 'Copyright (C) 2007-2013 Arvid Norlander'
 	echo 'Copyright (C) 2007-2008 EmErgE'
 	echo 'This is free software; see the source for copying conditions.  There is NO'
 	echo 'warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.'
@@ -380,6 +380,7 @@ while true; do
 			log_error "Connection failed"
 			envbot_quit 1
 		}
+		server_connected_before=1
 	fi
 	trap 'bot_quit "Interrupted (Ctrl-C)"' INT
 	trap 'bot_quit "Terminated (SIGTERM)"' TERM
@@ -419,11 +420,12 @@ while true; do
 				continue 2
 			fi
 		done
-		if [[ $line =~ ^:${server_name}\ +([0-9]{3})\ +([^ ]+)\ +(.*) ]]; then
+		if [[ $line =~ ^:([^ ]+)\ +([0-9]{3})\ +([^ ]+)\ +(.*) ]]; then
 			# this is a numeric
-			numeric="${BASH_REMATCH[1]}"
-			numericdata="${BASH_REMATCH[3]}"
-			server_handle_numerics "$numeric" "${BASH_REMATCH[2]}" "$numericdata"
+			numericserver="${BASH_REMATCH[1]}"
+			numeric="${BASH_REMATCH[2]}"
+			numericdata="${BASH_REMATCH[4]}"
+			server_handle_numerics "$numeric" "${BASH_REMATCH[3]}" "$numericdata"
 			for module in $modules_on_numeric; do
 				module_${module}_on_numeric "$numeric" "$numericdata"
 				if [[ $? -ne 0 ]]; then

@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -26,6 +26,7 @@
 module_check_numerics_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='on_numeric'
+	helpentry_module_check_numerics_description="Debugging module to check if any numeric we get is unknown."
 }
 
 module_check_numerics_UNLOAD() {

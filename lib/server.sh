@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -65,6 +65,12 @@ server_EXCEPTS=""
 ## @Type API
 #---------------------------------------------------------------------
 server_INVEX=""
+
+#---------------------------------------------------------------------
+## Our UUID (if any). Only some IRCds use this.
+## @Type API
+#---------------------------------------------------------------------
+server_UUID=""
 
 # In case we don't get a 005, make some sane defaults.
 #---------------------------------------------------------------------
@@ -402,6 +408,10 @@ server_connect() {
 				"$numeric_RPL_CREATED"|"$numeric_RPL_LUSERCLIENT"|"$numeric_RPL_LUSEROP"|"$numeric_RPL_LUSERUNKNOWN"|"$numeric_RPL_LUSERCHANNELS"|"$numeric_RPL_LUSERME"|"$numeric_RPL_LOCALUSERS"|"$numeric_RPL_GLOBALUSERS"|"$numeric_RPL_STATSCONN")
 					continue
 					;;
+				# Used to confuse certain spambots on connect by some IRCds.
+				"$numeric_ERR_TARGETTOOFAST"|"$numeric_RPL_NOSPAM")
+					continue
+					;;
 				"$numeric_RPL_MYINFO")
 					server_004="$data"
 					server_004=$(tr -d $'\r\n' <<< "$server_004")  # Get rid of ending newline
@@ -414,6 +424,10 @@ server_connect() {
 					;;
 				"$numeric_ERR_NICKNAMEINUSE"|"$numeric_ERR_ERRONEUSNICKNAME")
 					server_handle_nick_in_use
+					;;
+				# This gives us our UUID under inspircd.
+				"$numeric_RPL_YOURID")
+					server_UUID="$data"
 					;;
 				"$numeric_RPL_ENDOFMOTD"|"$numeric_ERR_NOMOTD")
 					sleep 1
