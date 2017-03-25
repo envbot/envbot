@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -43,7 +43,13 @@ module_helloworld_INIT() {
 	# as the command name got space in it. Note that a command can
 	# be at most two words.
 	commands_register "$1" 'hello_world' 'hello world' || return 1
+	helpentry_module_helloworld_description="This is an example module."
 
+	helpentry_helloworld_hi_syntax='<target> <message>'
+	helpentry_helloworld_hi_description='Send a greeting to <target> (nick or channel) with the <message>.'
+
+	helpentry_helloworld_helloworld_syntax='<message>'
+	helpentry_helloworld_helloworld_description='Send a greeting to the current scope with the one word <message>.'
 }
 
 #---------------------------------------------------------------------

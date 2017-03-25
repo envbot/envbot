@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -40,6 +40,13 @@ module_bugzilla_INIT() {
 	modinit_HOOKS='after_load'
 	commands_register "$1" 'bugs_search' 'bugs search' || return 1
 	commands_register "$1" 'bug' || return 1
+	helpentry_module_bugzilla_description="Search in bugzilla bug trackers."
+
+	helpentry_bugzilla_bugs_search_syntax='[-t <tracker>] [-(all|closed)] <pattern>'
+	helpentry_bugzilla_bugs_search_description='Search for <pattern> in <tracker> (or the default tracker).'
+
+	helpentry_bugzilla_bug_syntax='[-t <tracker>] <id>'
+	helpentry_bugzilla_bug_description='Look up the bug with <id> in <tracker> (or the default tracker).'
 }
 
 module_bugzilla_UNLOAD() {

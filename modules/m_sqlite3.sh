@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -27,6 +27,7 @@
 module_sqlite3_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='after_load'
+	helpentry_module_sqlite3_description="Provides sqlite3 database backend for other modules."
 }
 
 module_sqlite3_UNLOAD() {
@@ -41,7 +42,7 @@ module_sqlite3_REHASH() {
 module_sqlite3_after_load() {
 	# Check (silently) for sqlite3
 	if ! hash sqlite3 > /dev/null 2>&1; then
-		log_error "Couldn't find sqlite3 command line tool. The sqlite3 module depend on that tool."
+		log_error "Couldn't find sqlite3 command line tool. The sqlite3 module depends on that tool."
 		return 1
 	fi
 	if [[ -z $config_module_sqlite3_database ]]; then

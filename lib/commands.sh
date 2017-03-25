@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -198,6 +198,9 @@ commands_unregister() {
 		hash_unset 'commands_commands_module' "$command_name" || return 2
 		# Remove from command list.
 		list_remove 'commands_commands' "$command_name" 'commands_commands' "," || return 1
+		# Unset help strings (if any):
+		unset helpentry_${module}_${function_name}_syntax
+		unset helpentry_${module}_${function_name}_description
 		# Unset function itself.
 		full_function_name="module_${module}_handler_${function_name}"
 		unset "$full_function_name" || return 2

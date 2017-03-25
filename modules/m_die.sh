@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #  Copyright (C) 2007-2008  EmErgE <halt.system@gmail.com>                #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
@@ -29,6 +29,11 @@ module_die_INIT() {
 	modinit_HOOKS=''
 	commands_register "$1" 'die' || return 1
 	commands_register "$1" 'restart' || return 1
+	helpentry_module_die_description="Commands to shut down and restart bot."
+	helpentry_die_die_syntax='[reason]'
+	helpentry_die_die_description='Quit with an optional quit reason.'
+	helpentry_die_restart_syntax='[reason]'
+	helpentry_die_restart_description='Disconnect the bot with an optional quit reason, then rerun itself.'
 }
 
 module_die_UNLOAD() {

@@ -4,7 +4,7 @@
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
 #  Copyright (C) 2007-2008  EmErgE <halt.system@gmail.com>                #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -28,6 +28,10 @@ module_quote_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='after_load'
 	commands_register "$1" 'quote' || return 1
+	helpentry_module_quote_description="Provides command for random quotes from a file."
+
+	helpentry_quote_quote_syntax=''
+	helpentry_quote_quote_description='Return a random quote.'
 }
 
 module_quote_UNLOAD() {

@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -172,8 +172,8 @@ modules_add_hooks() {
 	[[ $? -ne 0 ]] && { log_error_file modules.log "Failed to get initialize module \"$module\""; return 1; }
 	# Check if it didn't set any modinit_API, in that case it is a API 1 module.
 	if [[ -z $modinit_API ]]; then
-		log_warning "Please upgrade \"$module\" to new module API $modules_current_API. This old API is deprecated."
-		modinit_HOOKS="$(module_${module}_INIT)"
+		log_error "Please upgrade \"$module\" to new module API $modules_current_API. This old API is obsolete and no longer supported."
+		return 1
 	elif [[ $modinit_API -ne $modules_current_API ]]; then
 		log_error "Current module API version is $modules_current_API, but the API version of \"$module\" is $module_API."
 		return 1
@@ -326,6 +326,9 @@ modules_unload() {
 	for othermodule in $modules_on_module_UNLOAD; do
 		module_${othermodule}_on_module_UNLOAD "$module"
 	done
+
+	# Unset help string
+	unset helpentry_module_${module}_description
 
 	return 0
 }

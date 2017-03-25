@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -28,6 +28,10 @@ module_eval_INIT() {
 	modinit_API='2'
 	modinit_HOOKS=''
 	commands_register "$1" 'eval' || return 1
+	helpentry_module_eval_description="Eval command for developers debugging the bot. Don't use if you don't know what you are doing."
+
+	helpentry_eval_eval_syntax='<expression>'
+	helpentry_eval_eval_description='Evaluate <expression> in global scope.'
 }
 
 module_eval_UNLOAD() {

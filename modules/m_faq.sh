@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -27,6 +27,10 @@ module_faq_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='after_load'
 	commands_register "$1" 'faq' || return 1
+	helpentry_module_faq_description="FAQ from a file."
+
+	helpentry_faq_faq_syntax='[number|string]'
+	helpentry_faq_faq_description='Show the <number>th faq item or search for a <string> in all the faq items.'
 }
 
 module_faq_UNLOAD() {

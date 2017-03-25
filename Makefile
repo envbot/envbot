@@ -2,7 +2,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -31,7 +31,7 @@
 #   dist-dir:     Generates a clean checkout of current version, ready to be
 #                 tared up. Can only be done in a bzr branch/checkout
 
-ENVBOT_VERSION = 0.0.1-trunk+bzr
+ENVBOT_VERSION = 0.1-trunk+bzr
 
 # For make dest-dir, defaults
 DISTDIR ?= dist
@@ -63,7 +63,9 @@ all: numerics config
 config:
 	$(SED) "s|@@moddir@@|modules|;s|@@transportdir@@|transport|;s|@@datadir@@|data|;s|@@logdir@@|logs|" doc/bot_settings.sh.example.in > bot_settings.sh.example
 
-numerics:
+numerics: lib/numerics.sh
+
+lib/numerics.sh: tools/numerics.txt
 	tools/build_numerics.sh > lib/numerics.sh
 
 # Used by developers to update man page.

@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #  Copyright (C) 2007-2008  EmErgE <halt.system@gmail.com>                #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
@@ -29,6 +29,13 @@ module_join_INIT() {
 	modinit_HOOKS=''
 	commands_register "$1" 'join' || return 1
 	commands_register "$1" 'part' || return 1
+	helpentry_module_join_description="Join/part commands."
+
+	helpentry_join_join_syntax='<#channel> [<key>]'
+	helpentry_join_join_description='Join a <#channel>, with an optional channel <key>.'
+
+	helpentry_join_part_syntax='<#channel> [<reason>]"'
+	helpentry_join_part_description='Part a <#channel> with an optional <reason>.'
 }
 
 module_join_UNLOAD() {

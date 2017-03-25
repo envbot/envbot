@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -27,6 +27,10 @@ module_rehash_INIT() {
 	modinit_API='2'
 	modinit_HOOKS=''
 	commands_register "$1" 'rehash' || return 1
+	helpentry_module_rehash_description="Exposes the internal rehash support to bot owners."
+
+	helpentry_rehash_rehash_syntax=''
+	helpentry_rehash_rehash_description='Reload configuration file.'
 }
 
 module_rehash_UNLOAD() {
@@ -47,7 +51,7 @@ module_rehash_dorehash() {
 	config_rehash
 	local status=$?
 	case $status in
-		0) status_message="Rehash successful" ;;
+		0) status_message="Rehash successful. (Also any loaded modules not listed in config have been unloaded.)" ;;
 		2) status_message="The new config is not the same version as the bot. Rehash won't work." ;;
 		3) status_message="Failed to source it, but the bot should not be in an undefined state." ;;
 		4) status_message="Configuration validation on new config failed, but the bot should not be in an undefined state." ;;

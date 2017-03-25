@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -30,6 +30,13 @@ module_ping_INIT() {
 	module_ping_latency=0
 	commands_register "$1" 'ping' || return 1
 	commands_register "$1" 'latency' || return 1
+	helpentry_module_ping_description="Provides latency tracking."
+
+	helpentry_ping_ping_syntax=''
+	helpentry_ping_ping_description='Respond to sender with "PONG!"'
+
+	helpentry_ping_latency_syntax=''
+	helpentry_ping_latency_description='Report current latency to server.'
 }
 
 module_ping_UNLOAD() {

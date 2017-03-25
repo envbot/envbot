@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -26,6 +26,7 @@
 module_nicktracking_INIT() {
 	modinit_API='2'
 	modinit_HOOKS='after_load before_connect on_numeric on_NICK on_QUIT on_KICK on_PART on_JOIN'
+	helpentry_module_nicktracking_description="Provides nicktracking backend for other modules."
 }
 
 module_nicktracking_UNLOAD() {

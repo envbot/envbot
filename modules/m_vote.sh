@@ -3,7 +3,7 @@
 ###########################################################################
 #                                                                         #
 #  envbot - an IRC bot in bash                                            #
-#  Copyright (C) 2007-2008  Arvid Norlander                               #
+#  Copyright (C) 2007-2009  Arvid Norlander                               #
 #                                                                         #
 #  This program is free software: you can redistribute it and/or modify   #
 #  it under the terms of the GNU General Public License as published by   #
@@ -65,7 +65,6 @@ module_vote_INIT() {
 }
 
 module_vote_UNLOAD() {
-	unset helpentry_module_vote_description
 # 	hash_reset module_vote_descs
 # 	hash_reset module_vote_votes
 # 	hash_reset module_vote_submitter
@@ -75,9 +74,10 @@ module_vote_UNLOAD() {
 # 	hash_reset module_vote_votes_against
 # 	hash_reset module_vote_votes_abstain
 # 	unset module_vote_array_names
-# 
+#
 # 	unset module_vote_add_proposal
 # 	unset module_vote_votes_count
+	return 0
 }
 
 module_vote_REHASH() {
