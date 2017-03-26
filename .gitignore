@@ -1,0 +1,13 @@
+*.sublime-project
+*.sublime-workspace
+*~
+.*.kate-swp
+/bot_settings.sh.example
+/data/*.db
+/data/faq.txt
+/data/quotes.txt
+/doc/api/private-*
+/doc/api/public-*
+/logs/*
+bot_settings.sh
+

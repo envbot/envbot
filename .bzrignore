@@ -1,7 +1,0 @@
-*~
-./bot_settings.sh.example
-./data/*.db
-./data/faq.txt
-./data/quotes.txt
-./logs/*
-bot_settings.sh
